@@ -6,14 +6,14 @@ const fs = require('fs');
 require('dotenv').config();
 
 const token = process.env.TOKEN;
-const clientId = '';
-const guildId = '';
+const clientId = ''; // client id from https://discord.com/developers/applications/
+const guildId = ''; // ur guild id for the bot to register commands
 
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers, // Enable GuildMembers intent
+        GatewayIntentBits.GuildMembers,
     ],
 });
 
@@ -24,13 +24,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command);
-    commands.push(command.data.toJSON());
+    commands.push(command.data);
 }
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setPresence({
-        activities: [{ name: 'KiriXen Studio 🪐', type: 3 }],
+        activities: [{ name: 'KiriXen Studio 🪐', type: 3 }], // type 5 - Competing, 4 - custom, 2- Listening, 0 - Playing, 3 - Watching, 1 - Streaming
         status: 'dnd',
     });
 
