@@ -3,24 +3,24 @@ const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
 module.exports = {
     owner: true,
     data: new SlashCommandBuilder()
-        .setName('animated')
-        .setDescription('Animated avatar for your discord bot')
-        .addAttachmentOption(option => option.setName('avatar').setDescription("Image avatar to anime!").setRequired(true)),
+        .setName('banner')
+        .setDescription('Put an animated gif, bastard')
+        .addAttachmentOption(option => option.setName('banner').setDescription("Put an animated gif banner").setRequired(true)),
 
     async execute(interaction, client) {
         const { options } = interaction;
-        const avatar = options.getAttachment('avatar');
+        const banner = options.getAttachment('banner');
 
-        if (avatar.contentType !== "image/gif") {
-            const embed = new EmbedBuilder().setDescription("Please use a gif for the animated pfp.");
+        if (banner.contentType !== "image/gif") {
+            const embed = new EmbedBuilder().setDescription("Please use a gif for the animated banner.");
             return await interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
         await interaction.deferReply({ ephemeral: true });
 
         try {
-            await client.user.setAvatar(avatar.url);
-            const embed = new EmbedBuilder().setDescription("I've uploaded the pfp!");
+            await client.user.setBanner(banner.url);
+            const embed = new EmbedBuilder().setDescription("I've uploaded the banner!");
             await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             console.log(error);
@@ -28,4 +28,4 @@ module.exports = {
             await interaction.editReply({ embeds: [embed] });
         }
     }
-}
+};
